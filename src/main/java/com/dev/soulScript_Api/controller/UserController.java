@@ -1,12 +1,15 @@
 package com.dev.soulScript_Api.controller;
 
-import com.dev.soulScript_Api.model.User;
+import com.dev.soulScript_Api.dto.UserRequestDTO;
+import com.dev.soulScript_Api.dto.UserResponseDTO;
 import com.dev.soulScript_Api.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,24 +22,29 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        List<UserResponseDTO> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable("id") Long id) {
-        return userService.getUserById(id);
+    @GetMapping("/{username}")
+    public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable String username) {
+        UserResponseDTO user = userService.getUserByUsername(username);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO userRequest) {
+        UserResponseDTO createdUser = userService.saveUser(userRequest);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED); // 201
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
     }
+
 }
 
 

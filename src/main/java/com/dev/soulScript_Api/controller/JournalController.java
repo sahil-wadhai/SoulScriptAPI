@@ -1,7 +1,10 @@
 package com.dev.soulScript_Api.controller;
 
+import com.dev.soulScript_Api.dto.JournalEntryRequestDTO;
+import com.dev.soulScript_Api.dto.JournalEntryResponseDTO;
 import com.dev.soulScript_Api.model.JournalEntry;
 import com.dev.soulScript_Api.service.JournalService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,23 +22,23 @@ public class JournalController {
     }
 
     @GetMapping
-    public List<JournalEntry> getAllEntries() {
+    public List<JournalEntryResponseDTO> getAllEntries() {
         return journalService.getAllEntries();
     }
 
-    @GetMapping("/user/{userId}")
-    public List<JournalEntry> getEntriesByUser(@PathVariable Long userId) {
-        return journalService.getEntriesByUser(userId);
+    @GetMapping("/user/{username}")
+    public List<JournalEntryResponseDTO> getEntriesByUser(@PathVariable String username) {
+        return journalService.getEntriesByUser(username);
     }
 
     @GetMapping("/{id}")
-    public Optional<JournalEntry> getEntryById(@PathVariable Long id) {
+    public JournalEntryResponseDTO getEntryById(@PathVariable long id) {
         return journalService.getEntryById(id);
     }
 
-    @PostMapping
-    public JournalEntry createEntry(@RequestBody JournalEntry entry) {
-        return journalService.saveEntry(entry);
+    @PostMapping("/{username}")
+    public JournalEntryResponseDTO createEntry(@Valid @RequestBody JournalEntryRequestDTO entry, @PathVariable String username) {
+        return journalService.saveEntry(entry,username);
     }
 
     @DeleteMapping("/{id}")
