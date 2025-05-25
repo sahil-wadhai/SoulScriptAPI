@@ -10,8 +10,8 @@ import com.dev.soulScript_Api.model.User;
 import com.dev.soulScript_Api.repository.UserRepository;
 import com.dev.soulScript_Api.service.UserService;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +19,9 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -46,6 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserResponseDTO saveUser(UserRequestDTO userRequest) {
+        userRequest.setPassword( passwordEncoder.encode(userRequest.getPassword()) ) ;
         User user = UserMapper.toEntity(userRequest);
 
         if (userRepository.existsByUsername(user.getUsername())) {

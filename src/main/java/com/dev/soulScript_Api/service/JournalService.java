@@ -14,7 +14,7 @@ public interface JournalService{
     List<JournalEntryResponseDTO> getAllEntries();
     List<JournalEntryResponseDTO> getEntriesByUser(String username);
     JournalEntryResponseDTO getEntryById(Long id);
-    JournalEntryResponseDTO saveEntry(JournalEntryRequestDTO entry, String username);
+    JournalEntryResponseDTO saveEntry(JournalEntryRequestDTO entry);
     void deleteEntry(Long id);
 }
 

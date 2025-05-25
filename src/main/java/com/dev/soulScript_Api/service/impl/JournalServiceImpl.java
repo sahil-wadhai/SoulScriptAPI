@@ -10,8 +10,9 @@ import com.dev.soulScript_Api.model.User;
 import com.dev.soulScript_Api.repository.JournalRepository;
 import com.dev.soulScript_Api.repository.UserRepository;
 import com.dev.soulScript_Api.service.JournalService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,14 +40,16 @@ public class JournalServiceImpl implements JournalService {
         return entries.stream().map((entry) -> JournalEntryMapper.toResponse(entry)).toList();
     }
 
-    public JournalEntryResponseDTO getEntryById(Long id) {
+    public JournalEntryResponseDTO getEntryById(Long id){
         Optional<JournalEntry> entry = journalRepository.findById(id);
         if(entry.isEmpty()) throw new JournalEntryNotFoundException("Journal Entry for id "+id+" not found.");
 
         return JournalEntryMapper.toResponse(entry.get());
     }
 
-    public JournalEntryResponseDTO saveEntry(JournalEntryRequestDTO request, String username){
+    public JournalEntryResponseDTO saveEntry(JournalEntryRequestDTO request){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         Optional<User> user = userRepository.findByUsername(username);
         if(user.isEmpty()) throw new UserNotFoundException("User not found for given username");
 

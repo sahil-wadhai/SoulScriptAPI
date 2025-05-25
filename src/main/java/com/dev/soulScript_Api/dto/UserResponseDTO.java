@@ -1,5 +1,6 @@
 package com.dev.soulScript_Api.dto;
 
+import com.dev.soulScript_Api.model.Role;
 import lombok.*;
 
 @Getter
@@ -12,4 +13,5 @@ public class UserResponseDTO{
     private String fullName;
     private String username;
     private String email;
+    private Role role;
 }

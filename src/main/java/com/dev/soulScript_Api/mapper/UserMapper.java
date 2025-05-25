@@ -2,6 +2,7 @@ package com.dev.soulScript_Api.mapper;
 
 import com.dev.soulScript_Api.dto.UserRequestDTO;
 import com.dev.soulScript_Api.dto.UserResponseDTO;
+import com.dev.soulScript_Api.model.Role;
 import com.dev.soulScript_Api.model.User;
 
 public class UserMapper {
@@ -12,6 +13,7 @@ public class UserMapper {
                 .username(request.getUsername())
                 .password(request.getPassword())
                 .email(request.getEmail())
+                .role(Role.USER)
                 .build();
     }
 
@@ -21,6 +23,7 @@ public class UserMapper {
                 .fullName(user.getFullName())
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 }

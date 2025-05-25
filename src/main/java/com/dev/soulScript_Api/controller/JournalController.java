@@ -36,9 +36,9 @@ public class JournalController {
         return journalService.getEntryById(id);
     }
 
-    @PostMapping("/{username}")
-    public JournalEntryResponseDTO createEntry(@Valid @RequestBody JournalEntryRequestDTO entry, @PathVariable String username) {
-        return journalService.saveEntry(entry,username);
+    @PostMapping
+    public JournalEntryResponseDTO createEntry(@Valid @RequestBody JournalEntryRequestDTO entry){
+        return journalService.saveEntry(entry);
     }
 
     @DeleteMapping("/{id}")
